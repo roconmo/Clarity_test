@@ -135,17 +135,17 @@ def unlimited_input_parser(path, given_host, given_connected_host):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("path",
+    parser.add_argument("--path",
                         help="Path to the txt log")
-    parser.add_argument("init_time",
+    parser.add_argument("--init_time",
                         help="Init datetime in Timestamp format", type=int)
-    parser.add_argument("end_time",
+    parser.add_argument("--end_time",
                         help="End datetime in Timestamp format", type=int)
-    parser.add_argument("timestp",
+    parser.add_argument("--timestp",
                         help="int in Timestamp format", type=int)
-    parser.add_argument("host_conn",
+    parser.add_argument("--host_conn",
                         help="Host that connects")
-    parser.add_argument("host_rec_conn",
+    parser.add_argument("--host_rec_conn",
                         help="Host that receives connections")
 
     args = parser.parse_args()
