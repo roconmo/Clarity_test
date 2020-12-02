@@ -1,4 +1,5 @@
 #!/usr/bin/env python3 
+import argparse
 import pandas as pd
 import os
 from os import listdir
@@ -78,7 +79,7 @@ def most_connected_hostname(my_dictionary):
     hostname_list = [host for host, val in my_dictionary.items() if val == max_key]
     return list(hostname_list)
 
-def collect_input(path, given_host, given_connected_host):
+def unlimited_input_parser(path, given_host, given_connected_host):
     """
     Retrieves a list of hostnames connected and that received connections from a given_host and a list of the host with most connections 
     Args:
@@ -117,3 +118,36 @@ def collect_input(path, given_host, given_connected_host):
             hostnames[myline[1]] = hostnames.get(myline[1], 0) + 1
     
     return list_host_connected, list_host_receive_conections, most_connected_hostname(hostnames)
+	
+def main():
+	parser=argparse.ArgumentParser()
+	
+	parser.add_argument("path",
+        help="Path to the txt log")
+	parser.add_argument("init_time",
+        help="Init datetime in Timestamp format", type=int)
+	parser.add_argument("end_time",
+        help="End datetime in Timestamp format", type=int)
+	parser.add_argument("timestp",
+        help="int in Timestamp format", type=int)
+	parser.add_argument("host_conn",
+        help="Host that connects")
+	parser.add_argument("host_rec_conn",
+        help="Host that receives connections")
+	
+	
+	args = parser.parse_args()
+	pathdir = args.path
+
+	log_filepath = os.path.join(pathdir, 'input-file-10000.txt')
+
+	print("# parsing log connections")
+	sequence_hostnames = parse_function(log_filepath, init_time, end_time, host_conn)
+    	if len(sequence_hostnames) == 0:
+        	print("# ERROR: cannot parse ", log_filepath)
+    	else:
+        	print("# number of hostnames = %d\n\n" % len(sequence_hostnames))
+	
+if __name__ == "__main__":
+    main()
+
