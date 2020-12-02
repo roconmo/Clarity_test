@@ -73,21 +73,22 @@ def convert_timestamp_to_secs(timestamp):
 
 def most_connected_hostname(my_dictionary):
     """
-    Retrieves a list with the most connected hosts
+    Retrieves a list with the most connected hosts and number of connections
     Args: 
-        my_dictionary (dict): collection of hosts with the number of connections in 60 minutes
+        my_dictionary (dict): Hosts with number of connections in an hour
     Returns:
-        list: collection of mos connected hosts
+        list: collection of most connected hosts and number of connections
     """
     max_key = max(my_dictionary.items(), key=operator.itemgetter(1))[1]
     hostname_list = [host for host,
                      val in my_dictionary.items() if val == max_key]
-    return list(hostname_list)
+    return list(hostname_list), max_key
 
 
 def unlimited_input_parser(path, given_host, given_connected_host):
     """
-    Retrieves a list of hostnames connected and that received connections from a given_host and a list of the host with most connections 
+    Retrieves a list of hostnames connected and that received connections
+        from a given_host and a list of the host with most connections
     Args:
         path (str): absolute path
         given_host (str): 
@@ -162,8 +163,8 @@ def main():
     if len(unlimited_parser) == 0:
         print("# ERROR: cannot parse ", args.path)
     else:
-        print("# The hostnames connected to the {} host during the last hour are the following: {}.\n The list of hostnames received connections from {} host during the last hour were: {}.\n And finally, the hostname that generated most connections in the last hour: {}".format(
-            args.host_conn, unlimited_parser[0], args.host_conn, unlimited_parser[1], unlimited_parser[2]))
+        print("# The hostnames connected to the {} host during the last hour are the following: {}.\n The list of hostnames received connections from {} host during the last hour were: {}.\n And finally, the hostname that generated most connections in the last hour: {} \n with {} connections.".format(
+            args.host_conn, unlimited_parser[0], args.host_conn, unlimited_parser[1], unlimited_parser[2][0], unlimited_parser[2][1]))
 
 
 if __name__ == "__main__":
