@@ -1,5 +1,3 @@
-
-
 #!/usr/bin/env python3
 import argparse
 import pandas as pd
@@ -106,7 +104,7 @@ def unlimited_input_parser(path, given_host, given_connected_host):
     hostname_list = []
     one_hour_secs = 3600
 
-    with get_data(mypath) as filehandle:
+    with get_data(path) as filehandle:
         for cnt, line in enumerate(reversed(list(filehandle))):
             if cnt == 0:
                 starting_point = convert_timestamp_to_secs(
@@ -151,12 +149,21 @@ def main():
     args = parser.parse_args()
 
     print("# parsing log connections")
-    sequence_hostnames = parse_function(args.path, args.init_time, args.end_time, args.host_conn)
+    sequence_hostnames = parse_function(
+        args.path, args.init_time, args.end_time, args.host_conn)
 
     if len(sequence_hostnames) == 0:
         print("# ERROR: cannot parse ", log_filepath)
     else:
-        print("# number of hostnames = %d\n\n" % len(sequence_hostnames))
+        print("# a list of hostnames {}".format(sequence_hostnames))
+
+    unlimited_parser = unlimited_input_parser(
+        args.path, args.host_conn, args.host_rec_conn)
+    if len(unlimited_parser) == 0:
+        print("# ERROR: cannot parse ", args.path)
+    else:
+        print("# The hostnames connected to the {} host during the last hour are the following: {}.\n The list of hostnames received connections from {} host during the last hour were: {}.\n And finally, the hostname that generated most connections in the last hour: {}".format(
+            args.host_conn, unlimited_parser[0], args.host_conn, unlimited_parser[1], unlimited_parser[2]))
 
 
 if __name__ == "__main__":
