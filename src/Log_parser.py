@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python3
 import argparse
 import pandas as pd
@@ -73,22 +75,24 @@ def convert_timestamp_to_secs(timestamp):
 
 def most_connected_hostname(my_dictionary):
     """
-    Retrieves a list with the most connected hosts and number of connections
+    Retrieves a list with the most connected hosts
     Args: 
-        my_dictionary (dict): Hosts with number of connections in an hour
+        my_dictionary (dict): collection of hosts with the number of connections in 60 minutes
     Returns:
-        list: collection of most connected hosts and number of connections
+        list: collection of mos connected hosts
     """
     max_key = max(my_dictionary.items(), key=operator.itemgetter(1))[1]
     hostname_list = [host for host,
                      val in my_dictionary.items() if val == max_key]
-    return list(hostname_list), max_key
+    return list(hostname_list)
+
+
+def dat2secs()
 
 
 def unlimited_input_parser(path, given_host, given_connected_host):
     """
-    Retrieves a list of hostnames connected and that received connections
-        from a given_host and a list of the host with most connections
+    Retrieves a list of hostnames connected and that received connections from a given_host and a list of the host with most connections 
     Args:
         path (str): absolute path
         given_host (str): 
@@ -105,7 +109,7 @@ def unlimited_input_parser(path, given_host, given_connected_host):
     hostname_list = []
     one_hour_secs = 3600
 
-    with get_data(path) as filehandle:
+    with get_data(mypath) as filehandle:
         for cnt, line in enumerate(reversed(list(filehandle))):
             if cnt == 0:
                 starting_point = convert_timestamp_to_secs(
@@ -134,37 +138,32 @@ def unlimited_input_parser(path, given_host, given_connected_host):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--path",
+    parser.add_argument("path",
                         help="Path to the txt log")
-    parser.add_argument("--init_time",
+    parser.add_argument("init_time",
                         help="Init datetime in Timestamp format", type=int)
-    parser.add_argument("--end_time",
+    parser.add_argument("end_time",
                         help="End datetime in Timestamp format", type=int)
-    parser.add_argument("--timestp",
+    parser.add_argument("timestp",
                         help="int in Timestamp format", type=int)
-    parser.add_argument("--host_conn",
+    parser.add_argument("host_conn",
                         help="Host that connects")
-    parser.add_argument("--host_rec_conn",
+    parser.add_argument("host_rec_conn",
                         help="Host that receives connections")
 
     args = parser.parse_args()
+    pathdir = args.path
+
+    log_filepath = os.path.join(pathdir, 'input-file-10000.txt')
 
     print("# parsing log connections")
     sequence_hostnames = parse_function(
-        args.path, args.init_time, args.end_time, args.host_conn)
+        log_filepath, init_time, end_time, host_conn)
 
     if len(sequence_hostnames) == 0:
         print("# ERROR: cannot parse ", log_filepath)
     else:
-        print("# a list of hostnames {}".format(sequence_hostnames))
-
-    unlimited_parser = unlimited_input_parser(
-        args.path, args.host_conn, args.host_rec_conn)
-    if len(unlimited_parser) == 0:
-        print("# ERROR: cannot parse ", args.path)
-    else:
-        print("# The hostnames connected to the {} host during the last hour are the following: {}.\n The list of hostnames received connections from {} host during the last hour were: {}.\n And finally, the hostname that generated most connections in the last hour: {} \n with {} connections.".format(
-            args.host_conn, unlimited_parser[0], args.host_conn, unlimited_parser[1], unlimited_parser[2][0], unlimited_parser[2][1]))
+        print("# number of hostnames = %d\n\n" % len(sequence_hostnames))
 
 
 if __name__ == "__main__":
