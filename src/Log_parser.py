@@ -149,13 +149,9 @@ def main():
                         help="Host that receives connections")
 
     args = parser.parse_args()
-    pathdir = args.path
-
-    log_filepath = os.path.join(pathdir, 'input-file-10000.txt')
 
     print("# parsing log connections")
-    sequence_hostnames = parse_function(
-        log_filepath, init_time, end_time, host_conn)
+    sequence_hostnames = parse_function(args.path, args.init_time, args.end_time, args.host_conn)
 
     if len(sequence_hostnames) == 0:
         print("# ERROR: cannot parse ", log_filepath)
