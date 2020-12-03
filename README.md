@@ -4,7 +4,7 @@ These scripts can be used to parse log files.
 
 The main functions are:
 - function parse_function: Given a host and a period of time,  the function returns a list of the hosts connnected to this host in a given period of time [L27](https://github.com/roconmo/Log_parser/blob/fc2dd50bd274def22c62210c1f071bdf19ed6ba1/src/Log_parser.py#L27).
-- function unlimited_input_parser: The idea of this function is to run every hour. The log is processed from the back because I assume that the timestamp. This 
+- function unlimited_input_parser: The idea of this function is to run every hour. The log is processed from the back because I assume that the timestamp is synchronized with the server time. This 
 function has an optiomal param called wait, by default indicates 3600 seconds and it is running indefinitibly until the script is stopped [L92](https://github.com/roconmo/Log_parser/blob/fc2dd50bd274def22c62210c1f071bdf19ed6ba1/src/Log_parser.py#L92):
 
 In order to control the arguments, the user has to indicate **interval** to run the parse_function() and **unlimited** to run the unlimited_input_parser(). 
